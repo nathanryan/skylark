@@ -20,19 +20,19 @@
         android:text="Mark" />
 
     <Button
-        android:id="@+id/btSatellite"
+        android:id="@+id/btText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/btMark"
-        android:text="Sat" />
+        android:text="Text" />
 
     <Button
         android:id="@+id/btClear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/btSatellite"
+        android:layout_toLeftOf="@+id/btText"
         android:text="Clear" />
 
     <ZoomControls

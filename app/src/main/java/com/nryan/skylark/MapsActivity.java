@@ -1,9 +1,10 @@
 package com.nryan.skylark;
 
-import android.*;
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,6 +22,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -37,12 +39,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
 
+    /**
+     * Placing markers on map
+     */
+    private static final LatLng TURVEY_HIDE = new LatLng(53.498664, -6.171644);
+    private Marker mTurvey;
+
 
     private final static int MY_PERMISSION_FINE_LOCATION = 101; //permissions check
 
     ZoomControls zoom; //zoom controls
 
     Button markBtn; //add marker controls
+    Button textBtn; //add marker controls
 
     Double birdLatitude = null;
     Double birdLongitude = null;
@@ -101,16 +110,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-
+        textBtn = (Button) findViewById(R.id.btText);
+        textBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendSMS(); //send current locaton via SMS
+            }
+        });
 
     }
-
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
@@ -124,7 +135,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //map type
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
+        //zoom in on Dublin
+        LatLng dublinZoom = new LatLng(53.3498, -6.2603);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dublinZoom, 8));
+
         // Add Different Hides here (change colour or image to mark them clearly)
+        addMarkersToMap();
         //LatLng sydney = new LatLng(-34, 151);
         //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
@@ -138,7 +154,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSION_FINE_LOCATION);
             }
         }
+    }
 
+    private void addMarkersToMap() {
+        // Uses a custom icon with the info window popping out of the center of the icon.
+        mTurvey = mMap.addMarker(new MarkerOptions()
+                .position(TURVEY_HIDE)
+                .title("Turvey Hide")
+                .snippet("The Frank McManus Hide in Turvey Park")
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.hide_locator))
+                .infoWindowAnchor(0.5f, 0.5f));
+    }
+
+    //opens SMS Implicit Intent
+    protected void sendSMS() {
+        Log.i("Send SMS", "");
+        Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+
+        smsIntent.setData(Uri.parse("smsto:"));
+        smsIntent.setType("vnd.android-dir/mms-sms");
+        smsIntent.putExtra("address"  , "0834420047");
+        smsIntent.putExtra("sms_body"  , "http://maps.google.com/?q="+birdLatitude+birdLongitude);
+
+        try {
+            startActivity(smsIntent);
+            finish();
+            Log.i("Finished sending SMS...", "");
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(MapsActivity.this,
+                    "SMS faild, please try again later.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     //define requests code for each permission
