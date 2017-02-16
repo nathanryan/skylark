@@ -22,7 +22,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -34,6 +33,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, OnMapClickListener, OnMapLongClickListener {
 
@@ -51,10 +52,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     ZoomControls zoom; //zoom controls
 
     Button markBtn; //add marker controls
-    Button textBtn; //add marker controls
+    Button textBtn; //send current location by SMS
 
-    Double birdLatitude = null;
-    Double birdLongitude = null;
+    Double userLatitude = null;
+    Double userLongitude = null;
 
     private GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
@@ -69,8 +70,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-
 
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
@@ -105,7 +104,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         markBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LatLng birdLocation = new LatLng(birdLatitude, birdLongitude);
+                LatLng birdLocation = new LatLng(userLatitude, userLongitude);
                 mMap.addMarker(new MarkerOptions().position(birdLocation).title("Bird Location"));
             }
         });
@@ -173,8 +172,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         smsIntent.setData(Uri.parse("smsto:"));
         smsIntent.setType("vnd.android-dir/mms-sms");
-        smsIntent.putExtra("address"  , "0834420047");
-        smsIntent.putExtra("sms_body"  , "http://maps.google.com/?q="+birdLatitude+birdLongitude);
+        smsIntent.putExtra("address", "");
+        smsIntent.putExtra("sms_body", "http://maps.google.com/?q="+ userLatitude + userLongitude);
 
         try {
             startActivity(smsIntent);
@@ -229,8 +228,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onLocationChanged(Location location) {
-        birdLatitude = location.getLatitude();
-        birdLongitude = location.getLongitude();
+        userLatitude = location.getLatitude();
+        userLongitude = location.getLongitude();
     }
 
     @Override
@@ -270,10 +269,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapLongClick(LatLng latLng) {
         //create new marker when user long clicks
-        MarkerOptions options = new MarkerOptions().position( latLng );
-        options.title( "Bird Find" );
+        MarkerOptions options = new MarkerOptions().position(latLng);
+        options.title( "Bird Find: " + latLng.toString() );
 
-        options.icon( BitmapDescriptorFactory.defaultMarker() );
-        mMap.addMarker( options );
+        options.icon(BitmapDescriptorFactory.defaultMarker());
+        mMap.addMarker(options);
     }
 }
