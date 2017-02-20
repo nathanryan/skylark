@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/card_view"
@@ -10,7 +11,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="129dp"
         android:padding="16dp" >
 
         <ImageView
@@ -38,6 +39,17 @@
             android:layout_toRightOf="@+id/item_image"
             android:layout_below="@+id/item_title"
             />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/addBtn"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:theme="@style/AppTheme"
+            android:layout_below="@+id/item_detail"
+            android:text="Seen"
+            android:textSize="10sp" />
 
     </RelativeLayout>
 

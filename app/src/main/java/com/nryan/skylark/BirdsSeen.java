@@ -10,23 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class BirdList extends Fragment {
-    RecyclerView recyclerView;
-    RecyclerView.LayoutManager layoutManager;
-    RecyclerView.Adapter adapter;
+public class BirdsSeen extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_bird_list, container, false);
-
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-
-        layoutManager = new LinearLayoutManager(this.getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-
-        adapter = new RecyclerAdapter();
-        recyclerView.setAdapter(adapter);
+        View view = inflater.inflate(R.layout.activity_birds_seen, container, false);
 
         return view;
     }

@@ -13,29 +13,29 @@ import android.widget.TextView;
  */
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
-    private String[] titles = {"Chapter One",
-            "Chapter Two",
-            "Chapter Three",
-            "Chapter Four",
-            "Chapter Five",
-            "Chapter Six",
-            "Chapter Seven",
-            "Chapter Eight"};
+    private String[] titles = {"Bird One",
+            "Bird Two",
+            "Bird Three",
+            "Bird Four",
+            "Bird Five",
+            "Bird Six",
+            "Bird Seven",
+            "Bird Eight"};
 
-    private String[] details = {"Item one details",
-            "Item two details", "Item three details",
-            "Item four details", "Item file details",
-            "Item six details", "Item seven details",
-            "Item eight details"};
+    private String[] details = {"Bird one details",
+            "Bird two details", "Bird three details",
+            "Bird four details", "Bird file details",
+            "Bird six details", "Bird seven details",
+            "Bird eight details"};
 
-    private int[] images = { R.drawable.android_image_1,
-            R.drawable.android_image_1,
-            R.drawable.android_image_1,
-            R.drawable.android_image_1,
-            R.drawable.android_image_1,
-            R.drawable.android_image_1,
-            R.drawable.android_image_1,
-            R.drawable.android_image_1 };
+    private int[] images = { R.drawable.robin,
+            R.drawable.robin,
+            R.drawable.robin,
+            R.drawable.robin,
+            R.drawable.robin,
+            R.drawable.robin,
+            R.drawable.robin,
+            R.drawable.robin };
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
