@@ -1,8 +1,6 @@
 package com.nryan.skylark;
 
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -11,13 +9,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-
-import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -94,11 +87,14 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    BirdList birdsList = new BirdList();
+                    BirdListFragment birdsList = new BirdListFragment();
                     return birdsList;
                 case 1:
-                    BirdsSeen birdsSeen = new BirdsSeen();
-                    return birdsSeen;
+                    BirdsSeenFragment birdsSeenFragment = new BirdsSeenFragment();
+                    return birdsSeenFragment;
+                case 2:
+                    BirdsMapFragment birdsMapFragment = new BirdsMapFragment();
+                    return birdsMapFragment;
                 default:
                     return null;
             }
@@ -107,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 2;
+            return 3;
         }
 
         @Override
@@ -117,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
                     return "BIRD LIST";
                 case 1:
                     return "BIRDS SEEN";
+                case 2:
+                    return "BIRDS MAP";
             }
             return null;
         }
