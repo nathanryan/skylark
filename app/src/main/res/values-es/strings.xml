@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Skylark</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="navigation_drawer_close">Cerrar el cajón de navegación</string>
+    <string name="navigation_drawer_open">Abrir el cajón de navegación</string>
+    <string name="title_activity_bird_list">"Lista de aves "</string>
+    <string name="title_activity_birds_seen">"Pájaros vistos "</string>
+    <string name="title_activity_main">Alondra</string>
+    <string name="title_activity_maps">Mapa</string>
+    <string name="bird_seen">Visto</string>
+    <string name="button_clear">Claro</string>
+    <string name="button_mark">Marca</string>
+    <string name="button_text">" Ubicación del texto"</string>
+</resources>

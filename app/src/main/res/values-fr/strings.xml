@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Skylark</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="bird_seen">Vu</string>
+    <string name="button_clear">Clair</string>
+    <string name="button_mark">Marque</string>
+    <string name="button_text">"Localisation du texte "</string>
+    <string name="title_activity_bird_list">"Liste des oiseaux "</string>
+    <string name="title_activity_birds_seen">"Oiseaux visités "</string>
+    <string name="title_activity_main">Alouette</string>
+    <string name="title_activity_maps">Carte</string>
+</resources>

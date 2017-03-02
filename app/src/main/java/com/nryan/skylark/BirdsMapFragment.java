@@ -35,7 +35,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
 
-public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
+public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener{
 
     private GoogleMap mMap;
 
@@ -45,10 +45,7 @@ public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, Go
     private static final LatLng TURVEY_HIDE = new LatLng(53.498664, -6.171644);
     private Marker mTurvey;
 
-
     private final static int MY_PERMISSION_FINE_LOCATION = 101; //permissions check
-
-    ZoomControls zoom; //zoom controls
 
     Button markBtn; //add marker controls
     Button textBtn; //send current location by SMS
@@ -66,38 +63,30 @@ public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, Go
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.birds_map_fragment, container, false);
 
+        googleApiClient = new GoogleApiClient.Builder(getContext())
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
 
+        locationRequest = new LocationRequest();
+        locationRequest.setInterval(15 * 1000);
+        locationRequest.setFastestInterval(5 * 1000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
         return view;
-    }
-
-    private void sendSMS() {
-        Log.i("Send SMS", "");
-        Intent smsIntent = new Intent(Intent.ACTION_VIEW);
-
-        smsIntent.setData(Uri.parse("smsto:"));
-        smsIntent.setType("vnd.android-dir/mms-sms");
-        smsIntent.putExtra("address", "");
-        smsIntent.putExtra("sms_body", "http://maps.google.com/?q="+ userLatitude + userLongitude);
-
-        try {
-            startActivity(smsIntent);
-            getActivity().finish();
-            Log.i("Finished sending SMS...", "");
-        } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(getContext(),
-                    "SMS faild, please try again later.", Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
+
+
         //permissions check
         if (checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             //enable MyLocation layer on map
-//            mMap.setMyLocationEnabled(true);
+            //mMap.setMyLocationEnabled(true);
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSION_FINE_LOCATION);
@@ -114,13 +103,13 @@ public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, Go
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
-               mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                   @Override
-                   public void onMapClick(LatLng latLng) {
-                       //move camera when user clicks on map
-                       mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-                   }
-               });
+                mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                    @Override
+                    public void onMapClick(LatLng latLng) {
+                        //move camera when user clicks on map
+                        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                    }
+                });
                 mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                     @Override
                     public void onMapLongClick(LatLng latLng) {
@@ -148,32 +137,15 @@ public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, Go
             }
         });
 
-        googleApiClient = new GoogleApiClient.Builder(getContext())
-                .addApi(LocationServices.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
 
-        locationRequest = new LocationRequest();
-        locationRequest.setInterval(15 * 1000);
-        locationRequest.setFastestInterval(5 * 1000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
 /*
-//map zoom controls
-        zoom = (ZoomControls) view.findViewById(R.id.zcZoom);
-        zoom.setOnZoomOutClickListener(new View.OnClickListener() {
+
+        textBtn = (Button) view.findViewById(R.id.btText);
+        textBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mMap.animateCamera(CameraUpdateFactory.zoomOut());
-
-            }
-        });
-        zoom.setOnZoomInClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mMap.animateCamera(CameraUpdateFactory.zoomIn());
-
+                sendSMS(); //send current locaton via SMS
             }
         });
 
@@ -187,13 +159,7 @@ public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, Go
             }
         });
 
-        textBtn = (Button) view.findViewById(R.id.btText);
-        textBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendSMS(); //send current locaton via SMS
-            }
-        });
+
 */
     }
 
@@ -207,6 +173,25 @@ public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, Go
         return supportMapFragment;
     }
 
+    private void sendSMS() {
+        Log.i("Send SMS", "");
+        Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+
+        smsIntent.setData(Uri.parse("smsto:"));
+        smsIntent.setType("vnd.android-dir/mms-sms");
+        smsIntent.putExtra("address", "");
+        smsIntent.putExtra("sms_body", "http://maps.google.com/?q="+ userLatitude + userLongitude);
+
+        try {
+            startActivity(smsIntent);
+            getActivity().finish();
+            Log.i("Finished sending SMS...", "");
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(getContext(),
+                    "SMS faild, please try again later.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void addMarkersToMap() {
         mTurvey = mMap.addMarker(new MarkerOptions()
                 .position(TURVEY_HIDE)
@@ -214,12 +199,6 @@ public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, Go
                 .snippet("The Frank McManus Hide in Turvey Park")
                 .icon(BitmapDescriptorFactory.fromResource(R.mipmap.hide_locator))
                 .infoWindowAnchor(0.5f, 0.5f));
-    }
-
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override

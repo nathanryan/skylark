@@ -110,11 +110,11 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "BIRD LIST";
+                    return getResources().getString(R.string.title_activity_bird_list);
                 case 1:
-                    return "BIRDS SEEN";
+                    return getResources().getString(R.string.title_activity_birds_seen);
                 case 2:
-                    return "BIRDS MAP";
+                    return getResources().getString(R.string.title_activity_maps);
             }
             return null;
         }

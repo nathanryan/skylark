@@ -5,8 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.Random;
 
 /**
  * Created by nathan on 19/02/2017.
@@ -77,8 +82,33 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         viewHolder.itemTitle.setText(titles[i]);
         viewHolder.itemDetail.setText(details[i]);
         viewHolder.itemImage.setImageResource(images[i]);
+
+        // Set the view to fade in
+        //setFadeAnimation(viewHolder.itemView);
+
+        setAnimation(viewHolder.itemView, i);
     }
 
+    protected int mLastPosition = -1;
+
+    protected void setAnimation(View viewToAnimate, int position) {
+        if (position > mLastPosition) {
+            ScaleAnimation anim = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            anim.setDuration(1000);
+            viewToAnimate.startAnimation(anim);
+            mLastPosition = position;
+        }
+    }
+/*
+    private final static int FADE_DURATION = 1000; // in milliseconds
+
+    //fade in on itemView load
+    private void setFadeAnimation(View view) {
+        AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
+        anim.setDuration(FADE_DURATION);
+        view.startAnimation(anim);
+    }
+*/
     @Override
     public int getItemCount() {
         return titles.length;

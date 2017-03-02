@@ -48,8 +48,9 @@
             android:layout_alignParentEnd="true"
             android:theme="@style/AppTheme"
             android:layout_below="@+id/item_detail"
-            android:text="Seen"
-            android:textSize="10sp" />
+            android:text="@string/bird_seen"
+            android:textSize="10sp"
+            android:elevation="1dp" />
 
     </RelativeLayout>
 

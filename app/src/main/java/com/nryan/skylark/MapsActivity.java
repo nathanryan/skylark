@@ -46,7 +46,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private final static int MY_PERMISSION_FINE_LOCATION = 101; //permissions check
 
-    ZoomControls zoom; //zoom controls
 
     Button markBtn; //add marker controls
     Button textBtn; //send current location by SMS
@@ -78,23 +77,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationRequest.setInterval(15 * 1000);
         locationRequest.setFastestInterval(5 * 1000);
         locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-
-        //map zoom controls
-        zoom = (ZoomControls) findViewById(R.id.zcZoom);
-        zoom.setOnZoomOutClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mMap.animateCamera(CameraUpdateFactory.zoomOut());
-
-            }
-        });
-        zoom.setOnZoomInClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mMap.animateCamera(CameraUpdateFactory.zoomIn());
-
-            }
-        });
 
         //add marker button to map control
         markBtn = (Button) findViewById(R.id.btMark);
