@@ -35,6 +35,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
 
+/**
+ * Created by Nathan Ryan x13448212 on 19/02/2017.
+ *
+ * reference https://www.youtube.com/watch?v=k2KXnT4ZecU
+ */
+
 public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener{
 
     private GoogleMap mMap;

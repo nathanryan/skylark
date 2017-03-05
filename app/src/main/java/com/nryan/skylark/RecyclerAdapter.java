@@ -14,7 +14,9 @@ import android.widget.TextView;
 import java.util.Random;
 
 /**
- * Created by nathan on 19/02/2017.
+ * Created by Nathan Ryan x13448212 on 19/02/2017.
+ *
+ * reference https://www.youtube.com/watch?v=A2_6mI7drVQ
  */
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {

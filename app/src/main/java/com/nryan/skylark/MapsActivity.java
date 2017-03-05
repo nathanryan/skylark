@@ -33,6 +33,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 
+/**
+ * Created by Nathan Ryan x13448212 on 19/02/2017.
+ *
+ * reference https://www.youtube.com/watch?v=k2KXnT4ZecU
+ */
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, OnMapClickListener, OnMapLongClickListener {
 
     private GoogleMap mMap;

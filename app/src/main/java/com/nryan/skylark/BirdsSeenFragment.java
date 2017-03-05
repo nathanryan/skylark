@@ -7,6 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+/**
+ * Created by Nathan Ryan x13448212 on 19/02/2017.
+ */
+
 public class BirdsSeenFragment extends Fragment {
 
     @Nullable

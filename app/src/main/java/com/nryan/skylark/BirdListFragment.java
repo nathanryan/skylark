@@ -10,6 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+/**
+ * Created by Nathan Ryan x13448212 on 19/02/2017.
+ */
+
 public class BirdListFragment extends Fragment {
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
@@ -28,13 +32,6 @@ public class BirdListFragment extends Fragment {
 
         adapter = new RecyclerAdapter();
         recyclerView.setAdapter(adapter);
-
-        DefaultItemAnimator animator = new DefaultItemAnimator();
-
-        //animator.setAddDuration(1000);
-        //animator.setRemoveDuration(1000);
-        //animator.setMoveDuration(4000);
-        //recyclerView.setItemAnimator(animator);
 
         return view;
     }

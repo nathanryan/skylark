@@ -12,6 +12,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+/**
+ * Created by Nathan Ryan x13448212 on 19/02/2017.
+ */
+
 public class MainActivity extends AppCompatActivity {
 
     /**
