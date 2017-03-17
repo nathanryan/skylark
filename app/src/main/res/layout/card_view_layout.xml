@@ -50,7 +50,8 @@
             android:layout_below="@+id/item_detail"
             android:text="@string/bird_seen"
             android:textSize="10sp"
-            android:elevation="1dp" />
+            android:elevation="1dp"
+            android:onClick="" />
 
     </RelativeLayout>
 

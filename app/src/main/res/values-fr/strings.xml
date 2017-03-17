@@ -10,4 +10,6 @@
     <string name="title_activity_birds_seen">"Oiseaux visités "</string>
     <string name="title_activity_main">Alouette</string>
     <string name="title_activity_maps">Carte</string>
+    <string name="navigation_drawer_close">Fermez le tiroir de navigation</string>
+    <string name="navigation_drawer_open">Ouvrez le tiroir de navigation</string>
 </resources>

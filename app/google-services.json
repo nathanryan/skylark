@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "675560585083",
+    "firebase_url": "https://skylark-872a4.firebaseio.com",
+    "project_id": "skylark-872a4",
+    "storage_bucket": "skylark-872a4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:675560585083:android:95a230eacf2b4238",
+        "android_client_info": {
+          "package_name": "com.nryan.skylark"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "675560585083-2b09gg0eq9lvjbbu99kn656oa3b7d995.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZBs6ccyT22cR2equozmJxYlKrNn-dUvI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

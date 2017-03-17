@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.nryan.skylark"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -17,10 +17,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -30,4 +32,16 @@ dependencies {
     compile 'com.android.support:design:25.1.1'
     compile 'com.google.android.gms:play-services:10.0.1'
     testCompile 'junit:junit:4.12'
+    compile 'com.google.firebase:firebase-auth:10.0.1'
+    compile 'com.google.firebase:firebase-database:10.0.1'
+    // FirebaseUI Database only
+    compile 'com.firebaseui:firebase-ui-database:1.1.1'
+    // FirebaseUI Auth only
+    compile 'com.firebaseui:firebase-ui-auth:1.1.1'
+    // FirebaseUI Storage only
+    compile 'com.firebaseui:firebase-ui-storage:1.1.1'
+    // Single target that includes all FirebaseUI libraries above
+    compile 'com.firebaseui:firebase-ui:1.1.1'
 }
+
+apply plugin: 'com.google.gms.google-services'

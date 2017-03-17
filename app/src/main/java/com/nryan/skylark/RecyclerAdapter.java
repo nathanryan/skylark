@@ -8,8 +8,10 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Random;
 
@@ -20,14 +22,14 @@ import java.util.Random;
  */
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
-    private String[] titles = {"Bird One",
-            "Bird Two",
-            "Bird Three",
-            "Bird Four",
-            "Bird Five",
-            "Bird Six",
-            "Bird Seven",
-            "Bird Eight"};
+    private String[] titles = {"Robin",
+            "Black Bird",
+            "Blue Tit",
+            "Goldfinch",
+            "Sparrow",
+            "Sparrowhawk",
+            "Crow",
+            "Wood Pigeon"};
 
     private String[] details = {"Bird one details",
             "Bird two details", "Bird three details",
@@ -43,6 +45,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             R.drawable.robin,
             R.drawable.robin,
             R.drawable.robin };
+    public Button addBird;
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -51,12 +54,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         public TextView itemTitle;
         public TextView itemDetail;
 
+
         public ViewHolder(View itemView) {
             super(itemView);
             itemImage = (ImageView)itemView.findViewById(R.id.item_image);
             itemTitle = (TextView)itemView.findViewById(R.id.item_title);
-            itemDetail =
-                    (TextView)itemView.findViewById(R.id.item_detail);
+            itemDetail = (TextView)itemView.findViewById(R.id.item_detail);
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
@@ -68,6 +72,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
                 }
             });
+
+
         }
     }
 
@@ -80,13 +86,24 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
+
         viewHolder.itemTitle.setText(titles[i]);
         viewHolder.itemDetail.setText(details[i]);
         viewHolder.itemImage.setImageResource(images[i]);
 
-        // Set the view to fade in
-        //setFadeAnimation(viewHolder.itemView);
+        addBird = (Button) viewHolder.itemView.findViewById(R.id.addBtn);
+
+        addBird.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                //add to firebase or somthin
+
+                Snackbar.make(v, "Click detected on item "+titles[i],
+                        Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+            }
+        });
 
         setAnimation(viewHolder.itemView, i);
     }
@@ -101,16 +118,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             mLastPosition = position;
         }
     }
-/*
-    private final static int FADE_DURATION = 1000; // in milliseconds
 
-    //fade in on itemView load
-    private void setFadeAnimation(View view) {
-        AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
-        anim.setDuration(FADE_DURATION);
-        view.startAnimation(anim);
-    }
-*/
     @Override
     public int getItemCount() {
         return titles.length;

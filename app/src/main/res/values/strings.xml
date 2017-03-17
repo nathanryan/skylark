@@ -16,6 +16,28 @@
     <string name="button_mark">Mark</string>
     <string name="button_text">Text Location</string>
 
-    <string name="action_settings">Settings</string>
+    <!--Register-->
+    <string name="register_title">Register</string>
+    <string name="button_register">Register</string>
+    <string name="register_email">Enter your Email</string>
+    <string name="register_password">Enter your Password</string>
+    <string name="already_registered">Already registered ? Sign in Here</string>
+
+    <!--Login-->
+    <string name="login_title">User Log In</string>
+    <string name="button_login">Sign In</string>
+    <string name="login_email">Enter your Email</string>
+    <string name="login_password">Enter your Password</string>
+    <string name="no_account">No account ? Sign up here</string>
+
+    <!--Profile-->
+    <string name="profile_title">User Profile</string>
+    <string name="profile_name">Enter your Name</string>
+    <string name="profile_address">Enter your Address</string>
+    <string name="button_profile_save">Save</string>
+    <string name="button_logout">Logout</string>
+    <string name="button_profile_list">List</string>
+
+    <string name="action_logout">Logout</string>
     <string name="section_format" translatable="false">Hello World from section: %1$d</string>
 </resources>
