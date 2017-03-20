@@ -32,6 +32,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
 
@@ -45,11 +49,17 @@ public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, Go
 
     private GoogleMap mMap;
 
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    FirebaseUser user = firebaseAuth.getCurrentUser();
+
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
     /**
      * Placing markers on map
      */
     private static final LatLng TURVEY_HIDE = new LatLng(53.498664, -6.171644);
     private Marker mTurvey;
+    private Marker mBirdLoc;
 
     private final static int MY_PERMISSION_FINE_LOCATION = 101; //permissions check
 
@@ -121,9 +131,13 @@ public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, Go
                     public void onMapLongClick(LatLng latLng) {
                         //create new marker when user long clicks
                         MarkerOptions options = new MarkerOptions().position(latLng);
-                        options.title( "Bird Find: " + latLng.toString() );
+                        options.title( "Bird Find: " + latLng.toString());
 
                         options.icon(BitmapDescriptorFactory.defaultMarker());
+
+                        DatabaseReference locRef = databaseReference.child("Locations");
+                        locRef.child(user.getUid()).push().setValue(latLng);
+
                         mMap.addMarker(options);
                     }
                 });
@@ -199,6 +213,13 @@ public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, Go
     }
 
     private void addMarkersToMap() {
+        mTurvey = mMap.addMarker(new MarkerOptions()
+                .position(TURVEY_HIDE)
+                .title("Turvey Hide")
+                .snippet("The Frank McManus Hide in Turvey Park")
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.hide_locator))
+                .infoWindowAnchor(0.5f, 0.5f));
+
         mTurvey = mMap.addMarker(new MarkerOptions()
                 .position(TURVEY_HIDE)
                 .title("Turvey Hide")

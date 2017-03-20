@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.nryan.skylark.MainActivity;
 import com.nryan.skylark.R;
 
 public class Register extends AppCompatActivity implements View.OnClickListener{
@@ -40,7 +41,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         if(firebaseAuth.getCurrentUser() != null){
             //start profile activity
             finish();
-            startActivity(new Intent(getApplicationContext(), Profile.class));
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
 
         progressDialog = new ProgressDialog(this);
@@ -83,7 +84,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
                         if(task.isSuccessful()){
                             //start profile activity
                             finish();
-                            startActivity(new Intent(getApplicationContext(), Profile.class));
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
                         }else{ // registration failed
                             Toast.makeText(Register.this, "Failed to Register", Toast.LENGTH_SHORT).show();

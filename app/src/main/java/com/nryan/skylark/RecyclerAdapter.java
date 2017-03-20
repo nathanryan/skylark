@@ -5,15 +5,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.Random;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by Nathan Ryan x13448212 on 19/02/2017.
@@ -22,6 +23,12 @@ import java.util.Random;
  */
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    FirebaseUser user = firebaseAuth.getCurrentUser();
+
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+
     private String[] titles = {"Robin",
             "Black Bird",
             "Blue Tit",
@@ -61,7 +68,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             itemTitle = (TextView)itemView.findViewById(R.id.item_title);
             itemDetail = (TextView)itemView.findViewById(R.id.item_detail);
 
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     int position = getAdapterPosition();
@@ -69,11 +75,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                     Snackbar.make(v, "Click detected on item " + position,
                             Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-
                 }
             });
-
-
         }
     }
 
@@ -96,12 +99,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         addBird.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                //add to firebase or somthin
 
-                Snackbar.make(v, "Click detected on item "+titles[i],
+                DatabaseReference birdRef = databaseReference.child("Birds");
+                birdRef.child(user.getUid()).push().setValue(titles[i]);
+
+                Snackbar.make(v, titles[i] + "has been marked as seen",
                         Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-
             }
         });
 

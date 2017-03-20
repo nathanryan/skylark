@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.nryan.skylark.R;
@@ -16,8 +17,10 @@ import com.nryan.skylark.R;
 public class ProfileList extends AppCompatActivity {
 
     private ListView listView;
-    private DatabaseReference databaseReference;
-    private FirebaseAuth firebaseAuth;
+
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    FirebaseUser user = firebaseAuth.getCurrentUser();
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Birds");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +36,10 @@ public class ProfileList extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.list_view);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference(firebaseAuth.getCurrentUser().getUid());
+        DatabaseReference birdRef = databaseReference.child(user.getUid());
 
-        FirebaseListAdapter<String> firebaseListAdapter = new FirebaseListAdapter<String>(this, String.class, android.R.layout.simple_list_item_1, databaseReference) {
+
+        FirebaseListAdapter<String> firebaseListAdapter = new FirebaseListAdapter<String>(this, String.class, android.R.layout.simple_list_item_1, birdRef) {
             @Override
             protected void populateView(View v, String model, int position) {
 

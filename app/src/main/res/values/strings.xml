@@ -40,4 +40,7 @@
 
     <string name="action_logout">Logout</string>
     <string name="section_format" translatable="false">Hello World from section: %1$d</string>
+    <string name="action_settings">Action Settings</string>
+    <string name="navigation_drawer_close">Navigation Drawer Close</string>
+    <string name="navigation_drawer_open">Navigation Drawer Open</string>
 </resources>

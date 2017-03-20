@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.nryan.skylark.MainActivity;
 import com.nryan.skylark.R;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
@@ -39,7 +40,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         if(firebaseAuth.getCurrentUser() != null){
             //start profile activity
             finish();
-            startActivity(new Intent(getApplicationContext(), Profile.class));
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
 
         buttonSignIn = (Button) findViewById(R.id.buttonSignIn);
@@ -82,7 +83,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                         if(task.isSuccessful()){
                             //start profile activity
                             finish();
-                            startActivity(new Intent(getApplicationContext(), Profile.class));
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         }else{ //signing in failed
                             Toast.makeText(Login.this, "Failed to Sign In", Toast.LENGTH_SHORT).show();
                         }
@@ -98,7 +99,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
         if(view == textViewSignUp){
             finish();
-            startActivity(new Intent(this, Login.class));
+            startActivity(new Intent(this, Register.class));
         }
     }
 }
