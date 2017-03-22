@@ -34,8 +34,11 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
 
@@ -53,6 +56,10 @@ public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, Go
     FirebaseUser user = firebaseAuth.getCurrentUser();
 
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+    //DatabaseReference databaseLocReference = FirebaseDatabase.getInstance().getReference("Locations");
+
+    DatabaseReference databaseLocReference = databaseReference.child("Locations");
 
     /**
      * Placing markers on map
@@ -117,7 +124,7 @@ public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, Go
 
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
-            public void onMapReady(GoogleMap googleMap) {
+            public void onMapReady(final GoogleMap googleMap) {
                 mMap = googleMap;
                 mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
@@ -139,6 +146,31 @@ public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, Go
                         locRef.child(user.getUid()).push().setValue(latLng);
 
                         mMap.addMarker(options);
+                    }
+                });
+                databaseLocReference.child(user.getUid()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            String latitude = child.child("latitude").getValue().toString();
+                            String longitude = child.child("longitude").getValue().toString();
+
+                            double location_right = Double.parseDouble(latitude);
+                            double location_left = Double.parseDouble(longitude);
+                            LatLng cod = new LatLng(location_right, location_left);
+
+                            MarkerOptions options = new MarkerOptions().position(cod);
+                            options.title( "Bird Find: ");
+
+                            options.icon(BitmapDescriptorFactory.defaultMarker());
+
+                            mMap.addMarker(options);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
                     }
                 });
 
