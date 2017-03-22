@@ -33,9 +33,6 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps" />
-        <activity
             android:name=".firebase.Register"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
@@ -48,7 +45,6 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".firebase.Login" />
         <activity android:name=".firebase.Profile" />
-        <activity android:name=".firebase.ProfileList"></activity>
     </application>
 
 </manifest>

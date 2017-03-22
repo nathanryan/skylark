@@ -11,30 +11,18 @@
         android:layout_height="match_parent"
         tools:context="com.nryan.skylark.MapsActivity" />
 
-    <Button
-        android:id="@+id/btMark"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:text="@string/button_mark" />
+
 
     <Button
         android:id="@+id/btText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/btMark"
+        android:layout_alignParentRight="true"
         android:text="@string/button_text"
         android:onClick="textLocation (MapsActivity)" />
 
-    <Button
-        android:id="@+id/btClear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/btText"
-        android:text="@string/button_clear" />
+
 
 </RelativeLayout>
 

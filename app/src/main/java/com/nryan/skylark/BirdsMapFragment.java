@@ -5,19 +5,18 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
-import android.widget.ZoomControls;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -44,42 +43,29 @@ import static android.support.v4.content.ContextCompat.checkSelfPermission;
 
 /**
  * Created by Nathan Ryan x13448212 on 19/02/2017.
- *
+ * <p>
  * reference https://www.youtube.com/watch?v=k2KXnT4ZecU
  */
 
-public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener{
+public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
 
-    private GoogleMap mMap;
-
-    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    FirebaseUser user = firebaseAuth.getCurrentUser();
-
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-
-    //DatabaseReference databaseLocReference = FirebaseDatabase.getInstance().getReference("Locations");
-
-    DatabaseReference databaseLocReference = databaseReference.child("Locations");
-
+    protected static final String TAG = "MapsActivity";
     /**
      * Placing markers on map
      */
     private static final LatLng TURVEY_HIDE = new LatLng(53.498664, -6.171644);
+    private final static int MY_PERMISSION_FINE_LOCATION = 101; //permissions check
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    FirebaseUser user = firebaseAuth.getCurrentUser();
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+    //retrieve Locations child elements from Firebase
+    DatabaseReference databaseLocReference = databaseReference.child("Locations");
+    Button textBtn; //send current location by SMS
+    private GoogleMap mMap;
     private Marker mTurvey;
     private Marker mBirdLoc;
-
-    private final static int MY_PERMISSION_FINE_LOCATION = 101; //permissions check
-
-    Button markBtn; //add marker controls
-    Button textBtn; //send current location by SMS
-
-    Double userLatitude = null;
-    Double userLongitude = null;
-
     private GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
-
-    protected static final String TAG = "MapsActivity";
 
     @Nullable
     @Override
@@ -97,6 +83,14 @@ public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, Go
         locationRequest.setFastestInterval(5 * 1000);
         locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
+        textBtn = (Button) view.findViewById(R.id.btText);
+        textBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendSMS(); //send current locaton via SMS
+            }
+        });
+
         return view;
     }
 
@@ -104,17 +98,6 @@ public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, Go
     public void onStart() {
         super.onStart();
 
-
-
-        //permissions check
-        if (checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            //enable MyLocation layer on map
-            //mMap.setMyLocationEnabled(true);
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSION_FINE_LOCATION);
-            }
-        }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
@@ -138,7 +121,7 @@ public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, Go
                     public void onMapLongClick(LatLng latLng) {
                         //create new marker when user long clicks
                         MarkerOptions options = new MarkerOptions().position(latLng);
-                        options.title( "Bird Find: " + latLng.toString());
+                        options.title("Bird Find: " + latLng.toString());
 
                         options.icon(BitmapDescriptorFactory.defaultMarker());
 
@@ -160,7 +143,7 @@ public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, Go
                             LatLng cod = new LatLng(location_right, location_left);
 
                             MarkerOptions options = new MarkerOptions().position(cod);
-                            options.title( "Bird Find: ");
+                            options.title("Bird Find: ");
 
                             options.icon(BitmapDescriptorFactory.defaultMarker());
 
@@ -181,46 +164,26 @@ public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, Go
                 LatLng dublinZoom = new LatLng(53.3498, -6.2603);
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dublinZoom, 8));
 
-                // Add Different Hides here (change colour or image to mark them clearly)
+                //permissions check
+                if (checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    //enable MyLocation layer on map
+                    mMap.setMyLocationEnabled(true);
+                } else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSION_FINE_LOCATION);
+                    }
+                }
                 addMarkersToMap();
-                //LatLng sydney = new LatLng(-34, 151);
-                //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-                //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
             }
         });
-
-
-
-/*
-
-        textBtn = (Button) view.findViewById(R.id.btText);
-        textBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendSMS(); //send current locaton via SMS
-            }
-        });
-
-        //add marker button to map control
-        markBtn = (Button) view.findViewById(R.id.btMark);
-        markBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LatLng birdLocation = new LatLng(userLatitude, userLongitude);
-                mMap.addMarker(new MarkerOptions().position(birdLocation).title("Bird Location"));
-            }
-        });
-
-
-*/
     }
 
-    private SupportMapFragment initFragment(SupportMapFragment supportMapFragment){
-        if(supportMapFragment==null){
+    private SupportMapFragment initFragment(SupportMapFragment supportMapFragment) {
+        if (supportMapFragment == null) {
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             supportMapFragment = SupportMapFragment.newInstance();
-            fragmentTransaction.replace(R.id.FragmentMap,supportMapFragment).commit();
+            fragmentTransaction.replace(R.id.FragmentMap, supportMapFragment).commit();
         }
         return supportMapFragment;
     }
@@ -232,7 +195,7 @@ public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, Go
         smsIntent.setData(Uri.parse("smsto:"));
         smsIntent.setType("vnd.android-dir/mms-sms");
         smsIntent.putExtra("address", "");
-        smsIntent.putExtra("sms_body", "http://maps.google.com/?q="+ userLatitude + userLongitude);
+        smsIntent.putExtra("sms_body", "http://maps.google.com/?q=");
 
         try {
             startActivity(smsIntent);

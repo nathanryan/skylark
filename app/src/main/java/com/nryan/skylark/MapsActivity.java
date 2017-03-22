@@ -6,16 +6,15 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-import android.widget.ZoomControls;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -24,45 +23,37 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
-import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 
 /**
  * Created by Nathan Ryan x13448212 on 19/02/2017.
- *
+ * <p>
  * reference https://www.youtube.com/watch?v=k2KXnT4ZecU
  */
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, OnMapClickListener, OnMapLongClickListener {
 
-    private GoogleMap mMap;
-
+    protected static final String TAG = "MapsActivity";
     /**
      * Placing markers on map
      */
     private static final LatLng TURVEY_HIDE = new LatLng(53.498664, -6.171644);
-    private Marker mTurvey;
-
-
     private final static int MY_PERMISSION_FINE_LOCATION = 101; //permissions check
-
-
     Button markBtn; //add marker controls
     Button textBtn; //send current location by SMS
-
     Double userLatitude = null;
     Double userLongitude = null;
-
+    private GoogleMap mMap;
+    private Marker mTurvey;
     private GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
-
-    protected static final String TAG = "MapsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,16 +75,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationRequest.setFastestInterval(5 * 1000);
         locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
-        //add marker button to map control
-        markBtn = (Button) findViewById(R.id.btMark);
-        markBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LatLng birdLocation = new LatLng(userLatitude, userLongitude);
-                mMap.addMarker(new MarkerOptions().position(birdLocation).title("Bird Location"));
-            }
-        });
-
         textBtn = (Button) findViewById(R.id.btText);
         textBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +84,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
     }
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -158,7 +140,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         smsIntent.setData(Uri.parse("smsto:"));
         smsIntent.setType("vnd.android-dir/mms-sms");
         smsIntent.putExtra("address", "");
-        smsIntent.putExtra("sms_body", "http://maps.google.com/?q="+ userLatitude + userLongitude);
+        smsIntent.putExtra("sms_body", "http://maps.google.com/?q=" + userLatitude + userLongitude);
 
         try {
             startActivity(smsIntent);
@@ -234,7 +216,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onResume() {
         super.onResume();
-        if(googleApiClient.isConnected()){
+        if (googleApiClient.isConnected()) {
             requestLocationUpdates();
         }
     }
@@ -255,7 +237,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapLongClick(LatLng latLng) {
         //create new marker when user long clicks
         MarkerOptions options = new MarkerOptions().position(latLng);
-        options.title( "Bird Find: " + latLng.toString() );
+        options.title("Bird Find: " + latLng.toString());
 
         options.icon(BitmapDescriptorFactory.defaultMarker());
         mMap.addMarker(options);

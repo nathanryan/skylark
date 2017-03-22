@@ -26,38 +26,12 @@
             android:textStyle="normal|bold"
             android:textSize="30sp" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:id="@+id/editTextName"
-            android:hint="@string/profile_name"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:id="@+id/editTextAddress"
-            android:hint="@string/profile_address"/>
-
-        <Button
-            android:text="@string/button_profile_save"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/buttonAddInfo" />
-
         <Button
             android:text="@string/button_logout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/buttonLogout"
             android:layout_gravity="center_horizontal"/>
-
-        <Button
-            android:text="@string/button_profile_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnList" />
 
         <Button
             android:text="BIRBS"
