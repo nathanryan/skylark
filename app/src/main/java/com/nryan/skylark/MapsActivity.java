@@ -148,7 +148,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Log.i("Finished sending SMS...", "");
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(MapsActivity.this,
-                    "SMS faild, please try again later.", Toast.LENGTH_SHORT).show();
+                    "SMS failed, please try again later.", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -1,5 +1,6 @@
 package com.nryan.skylark;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -8,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -40,10 +42,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * Created by Nathan Ryan x13448212 on 19/02/2017.
- * <p>
+ *
  * reference https://www.youtube.com/watch?v=k2KXnT4ZecU
  */
 
@@ -61,6 +64,8 @@ public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, Go
     //retrieve Locations child elements from Firebase
     DatabaseReference databaseLocReference = databaseReference.child("Locations");
     Button textBtn; //send current location by SMS
+    Double userLatitude = null;
+    Double userLongitude = null;
     private GoogleMap mMap;
     private Marker mTurvey;
     private Marker mBirdLoc;
@@ -97,7 +102,7 @@ public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, Go
     @Override
     public void onStart() {
         super.onStart();
-
+        googleApiClient.connect();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
@@ -188,14 +193,14 @@ public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, Go
         return supportMapFragment;
     }
 
-    private void sendSMS() {
+  private void sendSMS() {
         Log.i("Send SMS", "");
         Intent smsIntent = new Intent(Intent.ACTION_VIEW);
 
         smsIntent.setData(Uri.parse("smsto:"));
         smsIntent.setType("vnd.android-dir/mms-sms");
         smsIntent.putExtra("address", "");
-        smsIntent.putExtra("sms_body", "http://maps.google.com/?q=");
+        smsIntent.putExtra("sms_body", "http://maps.google.com/?q=" + userLatitude + userLongitude);
 
         try {
             startActivity(smsIntent);
@@ -203,7 +208,7 @@ public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, Go
             Log.i("Finished sending SMS...", "");
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(getContext(),
-                    "SMS faild, please try again later.", Toast.LENGTH_SHORT).show();
+                    "SMS failed, please try again later.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -223,9 +228,34 @@ public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, Go
                 .infoWindowAnchor(0.5f, 0.5f));
     }
 
+    //define requests code for each permission
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) { //if permission has been granted MyLocation is set to enabled
+            case MY_PERMISSION_FINE_LOCATION:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //enable MyLocation layer on map
+                    if (ActivityCompat.checkSelfPermission(this.getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        mMap.setMyLocationEnabled(true);
+                    }
+                } else { //if permissions denied we quit the app
+                    Toast.makeText(getApplicationContext(), "This app requires location permissions to be granted", Toast.LENGTH_LONG).show();
+
+                }
+                break;
+        }
+    }
+
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+        requestLocationUpdates();
+    }
 
+    private void requestLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(this.getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+        }
     }
 
     @Override
@@ -240,7 +270,31 @@ public class BirdsMapFragment extends Fragment implements OnMapReadyCallback, Go
 
     @Override
     public void onLocationChanged(Location location) {
+        userLatitude = location.getLatitude();
+        userLongitude = location.getLongitude();
+    }
 
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (googleApiClient.isConnected()) {
+            requestLocationUpdates();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        googleApiClient.disconnect();
     }
 
     @Override

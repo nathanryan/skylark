@@ -107,6 +107,9 @@ public class MainActivity extends AppCompatActivity {
                 case 2:
                     BirdsMapFragment birdsMapFragment = new BirdsMapFragment();
                     return birdsMapFragment;
+                case 3:
+                    CameraFragment cameraFragment = new CameraFragment();
+                    return cameraFragment;
                 default:
                     return null;
             }
@@ -115,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 4;
         }
 
         @Override
@@ -127,6 +130,8 @@ public class MainActivity extends AppCompatActivity {
                     return getResources().getString(R.string.title_activity_birds_seen);
                 case 2:
                     return getResources().getString(R.string.title_activity_maps);
+                case 3:
+                    return getResources().getString(R.string.title_activity_camera);
             }
             return null;
         }
