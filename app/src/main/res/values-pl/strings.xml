@@ -27,4 +27,7 @@
     <string name="register_email">Wprowadź swój email</string>
     <string name="register_password">Wprowadź hasło</string>
     <string name="register_title">zarejestrować</string>
+    <string name="button_camera">Aparat fotograficzny</string>
+    <string name="text_camera">Zrób zdjęcie, aby zobaczyć filtr ptaków!</string>
+    <string name="title_activity_camera">Aparat fotograficzny</string>
 </resources>

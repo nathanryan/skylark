@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -26,6 +27,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -35,20 +37,14 @@ import static android.app.Activity.RESULT_OK;
 import static android.os.Environment.getExternalStoragePublicDirectory;
 import static android.support.v4.content.PermissionChecker.checkSelfPermission;
 
-/*
-* CameraFragment.java
-*
-* Version 1
-*
-* 28/03/2016
-*
-* @reference CameraIntentExample File Dominic Carr dominic.carr@ncirl.ie
-*
-* @author Nathan Ryan x13448212
-*
+/**
+ * Created by Nathan Ryan x13448212 on 28/03/2017.
  */
 
 public class CameraFragment extends Fragment {
+    private ImageView imageView;
+    static final int REQUEST_TAKE_PHOTO = 1;
+    String mCurrentPhotoPath;
 
     @Nullable
     @Override
@@ -57,7 +53,6 @@ public class CameraFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
 
         Button clickCamera = (Button)  view.findViewById(R.id.cameraBtn);
-        Button clickSave = (Button)  view.findViewById(R.id.savePicBtn);
 
         imageView = (ImageView) view.findViewById(R.id.imageView);
 
@@ -69,24 +64,8 @@ public class CameraFragment extends Fragment {
             }
         });
 
-        clickSave.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
-            @Override
-            public void onClick(View v) {
-                saveImage(imageView);
-            }
-        });
-
         return view;
     }
-
-    /*
-   * @author Nathan Ryan x13448212
-   */
-
-
-    private ImageView imageView;
-    static final int REQUEST_TAKE_PHOTO = 1;
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -118,8 +97,6 @@ public class CameraFragment extends Fragment {
         }
     }
 
-    String mCurrentPhotoPath;
-
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -134,31 +111,6 @@ public class CameraFragment extends Fragment {
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
-    }
-
-    private void saveImage(ImageView imageView) {
-        Drawable image = imageView.getDrawable();
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        if(image != null && image instanceof BitmapDrawable) {
-            BitmapDrawable drawable = (BitmapDrawable) image;
-            Bitmap bitmap = drawable.getBitmap();
-            try {
-                File file = File.createTempFile(
-                        imageFileName,  /* prefix */
-                        ".jpg",         /* suffix */
-                        storageDir      /* directory */
-                );
-                mCurrentPhotoPath = file.getAbsolutePath();
-                FileOutputStream stream = new FileOutputStream(file);
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                stream.flush();
-                stream.close();
-            } catch (Exception e) {
-                // TODO: handle exception
-            }
-        }
     }
 
     private void galleryAddPic() {
@@ -193,7 +145,7 @@ public class CameraFragment extends Fragment {
 
         Drawable[] layers = new Drawable[2];
         layers[0] = new BitmapDrawable(getResources(), bitmap);
-        layers[1] = getResources().getDrawable(R.drawable.vibes);
+        layers[1] = getResources().getDrawable(R.drawable.birb);
         LayerDrawable layerDrawable = new LayerDrawable(layers);
         imageView.setImageDrawable(layerDrawable);
     }

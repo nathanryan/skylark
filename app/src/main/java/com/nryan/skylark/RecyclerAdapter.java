@@ -35,20 +35,27 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             "Sparrow",
             "Sparrowhawk",
             "Crow",
-            "Wood Pigeon"};
-    private String[] details = {"Bird one details",
-            "Bird two details", "Bird three details",
-            "Bird four details", "Bird file details",
-            "Bird six details", "Bird seven details",
-            "Bird eight details"};
+            "Wood Pigeon",
+            "Wren",
+            "Hen Harrier"};
+ /*   private String[] details = {"The European robin (Erithacus rubecula), known simply as the robin or robin redbreast in the British Isles, is a small insectivorous passerine bird, specifically a chat, that was formerly classified as a member of the thrush family (Turdidae) but is now considered to be an Old World flycatcher",
+            "The commonest and most widespread member of the thrush family In Ireland. The males's all black plumage and bright yellow bill is unmistakable, however females are much browner, with speckles on the upper breast and at first glance resemble a Song Thrush.",
+            "A colourful, noisy, active little bird, commonly seen in gardens, especially at nut feeders and will use nestboxes. Bright blue crown, nape colllar, wings and tail and yellow underside.",
+            "Smaller than a Chaffinch, this brightly-coloured finch has become a familiar sight at garden nut feeders in recent years.",
+            "Sturdy relative of the finches, with large head and bill. Dark brown upperparts with heavy dark streaking, grey underparts.",
+            " A small bird of prey (raptor) with broad wings with blunt wing tips and a long tail. Small hooked bill suitable for eating meat. Tail is banded in all plumages with four or five bands.",
+            "Slightly larger than a Rook. Ages and sexes are similar in appearance. The head, throat and breast are black, as are the wings and tail.",
+            " The largest of the pigeons in Ireland with a proportionally long tail and small head. A full breast. Easily identified in flight by large white wing bands traversing the upper wing."}; */
     private int[] images = {R.drawable.robin,
-            R.drawable.robin,
-            R.drawable.robin,
-            R.drawable.robin,
-            R.drawable.robin,
-            R.drawable.robin,
-            R.drawable.robin,
-            R.drawable.robin};
+            R.drawable.blackbird,
+            R.drawable.bluetit,
+            R.drawable.goldfinch,
+            R.drawable.sparrow,
+            R.drawable.sparrowhawk,
+            R.drawable.crow,
+            R.drawable.pigeon,
+            R.drawable.wren,
+            R.drawable.henharrier};
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -62,7 +69,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
 
         viewHolder.itemTitle.setText(titles[i]);
-        viewHolder.itemDetail.setText(details[i]);
+        //viewHolder.itemDetail.setText(details[i]);
         viewHolder.itemImage.setImageResource(images[i]);
 
         addBird = (Button) viewHolder.itemView.findViewById(R.id.addBtn);
@@ -74,7 +81,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 DatabaseReference birdRef = databaseReference.child("Birds");
                 birdRef.child(user.getUid()).push().setValue(titles[i]);
 
-                Snackbar.make(v, titles[i] + "has been marked as seen",
+                Snackbar.make(v, titles[i] + " has been marked as seen",
                         Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
@@ -98,29 +105,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-
-        public int currentItem;
         public ImageView itemImage;
         public TextView itemTitle;
-        public TextView itemDetail;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
             itemImage = (ImageView) itemView.findViewById(R.id.item_image);
             itemTitle = (TextView) itemView.findViewById(R.id.item_title);
-            itemDetail = (TextView) itemView.findViewById(R.id.item_detail);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-
-                    Snackbar.make(v, "Click detected on item " + position,
-                            Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
-            });
         }
     }
 }

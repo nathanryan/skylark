@@ -27,4 +27,7 @@
     <string name="register_email">Introduce tu correo electrónico</string>
     <string name="register_password">Ingrese su contraseña</string>
     <string name="register_title">registro</string>
+    <string name="button_camera">Cámara</string>
+    <string name="text_camera">Tome una foto para ver un filtro Bird!</string>
+    <string name="title_activity_camera">Cámara</string>
 </resources>

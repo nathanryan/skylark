@@ -4,7 +4,7 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_bird_list">Bird List</string>
     <string name="title_activity_birds_seen">Birds Seen</string>
-    <string name="title_activity_camera">Camera Seen</string>
+    <string name="title_activity_camera">Camera</string>
     <string name="title_activity_main">Skylark</string>
 
     <!--Bird List-->
@@ -18,9 +18,8 @@
     <string name="button_text">Text Location</string>
 
     <!--Map-->
-    <string name="text_camera">Take a picture to see a Good Vibes filter !</string>
+    <string name="text_camera">Take a picture to see a Bird filter !</string>
     <string name="button_camera">Camera</string>
-    <string name="save_picture">Save Picture</string>
 
     <!--Register-->
     <string name="register_title">Register</string>
@@ -38,8 +37,6 @@
 
     <!--Profile-->
     <string name="profile_title">User Profile</string>
-    <string name="profile_name">Enter your Name</string>
-    <string name="profile_address">Enter your Address</string>
     <string name="button_profile_save">Save</string>
     <string name="button_logout">Logout</string>
     <string name="button_profile_list">List</string>
@@ -49,7 +46,4 @@
     <string name="action_settings">Action Settings</string>
     <string name="navigation_drawer_close">Navigation Drawer Close</string>
     <string name="navigation_drawer_open">Navigation Drawer Open</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
